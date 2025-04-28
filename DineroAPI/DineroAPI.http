@@ -1,0 +1,6 @@
+@DineroAPI_HostAddress = http://localhost:5293
+
+GET {{DineroAPI_HostAddress}}/api/inscripcion/
+Accept: application/json
+
+###

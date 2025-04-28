@@ -1,0 +1,72 @@
+﻿@page
+@model InversionesWebUI.Pages.CreateModel
+
+<h1>Productos disponibles para inversion</h1>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <form method="post" asp-page-handler="Agregar Producto" class="form-inline">
+            <div class="input-group">
+                <select asp-for="SelectedProductId"
+                        asp-items="Model.OpcionProductos"
+                        class="form-select"
+                        aria-label="Select a product">
+                </select>
+                <button type="submit"
+                        class="btn btn-primary"
+                        aria-label="Add product">
+                    <i class="fas fa-plus"></i> Agregar Producto
+                </button>
+            </div>
+            <span asp-validation-for="SelectedProductId" class="text-danger"></span>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Productos?.Any() == true)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Productos)
+                    {
+                        <tr>
+                            <td>@product.Nombre</td>
+                            <td>@product.ValorProducto.ToString("C")</td>
+                            <td>@product.TipoProducto</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                No hay productos disponibles.
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                if ($('#SelectedProductId').val() === '') {
+                    e.preventDefault();
+                    alert('Por favor seleccione un producto');
+                }
+            });
+        });
+    </script>
+}
+

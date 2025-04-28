@@ -1,0 +1,37 @@
+﻿@page "/inscripciones"
+@addTagHelper *,Microsoft.AspNetcore.Mvc.Taghelpers
+@model InversionesWebUI.Pages.InscripcionesModel
+<form method="post">   
+@if (Model.inscripciones == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nombre del Producto</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var inscripcion in Model.inscripciones)
+        {
+            <tr>
+                <td>@inscripcion.IdCliente</td>
+                <td>@inscripcion.IdProducto</td>
+                <td><button type="submit" asp-page-handler="delete" asp-route-id="@inscripcion.Id" >Eliminar</button> </td>
+                <td ><input type="hidden" asp-for="@inscripcion.Id" /></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div style="margin:20px 20px ">
+        <a asp-page="Create">Agregar inversion</a>
+    </div>
+}
+</form>
