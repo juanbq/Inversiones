@@ -44,17 +44,24 @@ namespace DineroAPI.Controllers
 
         // POST api/<InscriptionController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Inscripcion inscription)
+        public async Task<IActionResult> Post([FromBody]Inscripcion inscripcion)
         {
-            if (inscription.Id == string.Empty)
-                inscription.Id = Guid.NewGuid().ToString();
-            var response= _context.LoadAsync<Inscripcion>(inscription.Id);
+            if (inscripcion.Id == string.Empty)
+                inscripcion.Id = Guid.NewGuid().ToString();
+            var response= _context.LoadAsync<Inscripcion>(inscripcion.Id);
             if (response == null || !response.IsFaulted)
             {
                 return BadRequest($"Ya existe esa inversion.");
             }
-            await _context.SaveAsync<Inscripcion>(inscription);
-            return Ok(inscription);
+
+            var DataCliente = await _context.LoadAsync<Cliente>(inscripcion.IdCliente);
+            var DataProducto = await _context.LoadAsync<Producto>(inscripcion.IdProducto);
+            inscripcion.NombreDelCliente = DataCliente.Nombres + " " + DataCliente.Apellidos; 
+            inscripcion.NombreProducto = DataProducto.Nombre;
+            inscripcion.TipoProducto = DataProducto.TipoProducto;
+            inscripcion.Monto = DataProducto.ValorProducto;
+            await _context.SaveAsync<Inscripcion>(inscripcion);
+            return Ok(inscripcion);
         }
 
         // DELETE api/<InscriptionController>/5

@@ -1,5 +1,6 @@
 ﻿@page "/inscripciones"
 @addTagHelper *,Microsoft.AspNetcore.Mvc.Taghelpers
+@using System.Globalization
 @model InversionesWebUI.Pages.InscripcionesModel
 <form method="post">   
 @if (Model.inscripciones == null)
@@ -8,12 +9,15 @@
 }
 else
 {
+    <div style="margin:20px 20px">
+        <p><b>Nombre del Cliente:</b> @Model.inscripciones.FirstOrDefault().NombreDelCliente</p>
+    </div>
     <table class="table table-striped">
-        <thead>
+        <thead class="table-info">
         <tr>
             <th>Nombre del Producto</th>
             <th>Tipo</th>
-            <th>Valor</th>
+            <th style="text-align:right">Valor</th>
             <th></th>
 
         </tr>
@@ -22,16 +26,17 @@ else
         @foreach (var inscripcion in Model.inscripciones)
         {
             <tr>
-                <td>@inscripcion.IdCliente</td>
-                <td>@inscripcion.IdProducto</td>
-                <td><button type="submit" asp-page-handler="delete" asp-route-id="@inscripcion.Id" >Eliminar</button> </td>
+                <td>@inscripcion.NombreProducto</td>
+                <td>@inscripcion.TipoProducto</td>
+                <td style="text-align:right">@inscripcion.Monto.ToString("C2", new CultureInfo("es-CO"))</td>
+                <td><button class="btn btn-danger" type="submit" asp-page-handler="delete" asp-route-id="@inscripcion.Id" >Eliminar</button> </td>
                 <td ><input type="hidden" asp-for="@inscripcion.Id" /></td>
             </tr>
         }
         </tbody>
     </table>
     <div style="margin:20px 20px ">
-        <a asp-page="Create">Agregar inversion</a>
+        <a asp-page="Create" class="btn btn-primary">Agregar inversion</a>
     </div>
 }
 </form>

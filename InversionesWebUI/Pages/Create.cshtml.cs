@@ -44,7 +44,11 @@ namespace InversionesWebUI.Pages
             }
 
             await _inversionesService.Create(new 
-                Inscripcion{IdCliente = 1, IdProducto = SelectedProductId,Id=""});
+                Inscripcion
+                {
+                    IdCliente = 1, IdProducto = SelectedProductId,Id="",
+                    NombreDelCliente = "",NombreProducto = "",TipoProducto = ""
+                });
 
             return RedirectToPage("Inscripciones");
         }

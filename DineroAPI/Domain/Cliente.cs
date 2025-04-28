@@ -6,7 +6,7 @@ namespace DineroAPI.Domain
     public class Cliente
     {
         [DynamoDBHashKey("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [DynamoDBProperty("nombres")]
         public string Nombres { get; set; }

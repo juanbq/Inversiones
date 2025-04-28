@@ -24,6 +24,7 @@ internal class Program
     {
         try
         {
+            Console.WriteLine("\n **Creando tablas inscripciones**\n");
             var response = await Client.CreateTableAsync(new CreateTableRequest
             {
                 TableName = "Inscripcion",
@@ -33,13 +34,12 @@ internal class Program
                     {
                         AttributeName = "idCliente",
                         AttributeType = ScalarAttributeType.N
+                    },
+                    new AttributeDefinition
+                    {
+                        AttributeName = "idProducto",
+                        AttributeType = ScalarAttributeType.N
                     }
-                    //,
-                    //new AttributeDefinition
-                    //{
-                    //    AttributeName = "idProducto",
-                    //    AttributeType = ScalarAttributeType.N
-                    //}
                 },
                 KeySchema = new List<KeySchemaElement>
                 {
@@ -47,6 +47,11 @@ internal class Program
                     {
                         AttributeName = "idCliente",
                         KeyType = KeyType.HASH
+                    },
+                    new KeySchemaElement
+                    {
+                        AttributeName = "idProducto",
+                        KeyType = KeyType.RANGE
                     }
                 },
 
@@ -73,6 +78,7 @@ internal class Program
     {
         try
         {
+            Console.WriteLine("\n ** Creando tablas de clientes **\n");
             var response = await Client.CreateTableAsync(new CreateTableRequest
             {
                 TableName = "Clientes",
@@ -116,6 +122,7 @@ internal class Program
     {
         try
         {
+            Console.WriteLine("\n ** Creando tablas de productos **\n");
             var response = await Client.CreateTableAsync(new CreateTableRequest
             {
                 TableName = ProductTableName,
