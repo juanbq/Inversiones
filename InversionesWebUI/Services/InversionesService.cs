@@ -26,19 +26,22 @@ namespace InversionesWebUI.Services
             }
         }
 
-        public async Task<Inscripcion> GetById(string id)
+        public async Task<IEnumerable<Inscripcion>> GetById(int idCliente, int idProducto)
         {
             try 
             {
-                var response = await _client.GetAsync("api/inscription/{id}");
+                var inscripcion = new Inscripcion { IdProducto = idProducto, IdCliente = idCliente};
+                var response = await _client.GetAsync($"api/inscription&idCliente={idCliente}&idProducto={idProducto}");
                 response.EnsureSuccessStatusCode();
-                var inscripciones = await response.Content.ReadFromJsonAsync<Inscripcion>();
-                return inscripciones ?? new Inscripcion();
+                var inscripciones = await response.Content.ReadFromJsonAsync<IEnumerable<Inscripcion>>();
+                return inscripciones ?? Enumerable.Empty<Inscripcion>();
             } 
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+
+            return null;
         }
 
         public async Task<Inscripcion> Create(Inscripcion inversion)
@@ -48,11 +51,11 @@ namespace InversionesWebUI.Services
             return inversion;
         }
 
-        public Task Delete(string id)
+        public Task Delete(Inscripcion inscripcion)
         {
             try
             {
-                var response = _client.DeleteAsync($"api/inscription/{id}");
+                var response = _client.DeleteAsync($"api/inscription/{inscripcion.Id}");
             } 
             catch (Exception ex) {
                 throw new Exception(ex.Message);
@@ -70,10 +73,10 @@ namespace InversionesWebUI.Services
             {
                 return true;
             }
-            var total = 0;
+            decimal total = 0;
             foreach (var inscripcion in inscripciones)
             {
-                //total += inscripcion.Valor;
+                total = total + inscripcion.Monto;
             }
             if (total + valorAdicional > 500000)
             {

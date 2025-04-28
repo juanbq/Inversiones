@@ -29,14 +29,13 @@ namespace InversionesWebUI.Pages
             var response = await _service.Create(inversionCliente);
             return Page();
         }
-        public async Task<IActionResult> OnPostDeleteAsync(string id)
+        public async Task<IActionResult> OnPostDeleteAsync(int idCliente,int idProducto)
         {
-            var producto = await _service.GetById(id);
+            var producto = _service.GetById(idCliente, idProducto).Result.FirstOrDefault();
 
-            if (producto != null)
-            {
-                await _service.Delete(producto.Id);
-            }
+            if (producto == null) return NotFound();
+
+            await _service.Delete(producto);
 
             return RedirectToPage();
         }

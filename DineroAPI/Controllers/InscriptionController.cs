@@ -28,10 +28,11 @@ namespace DineroAPI.Controllers
             }
         }
         // GET api/<InscriptionController>/5
-        [HttpGet("{idCliente}")]
-        public async Task<ActionResult<IEnumerator<Inscripcion>>> GetInscripcionesCliente(int idCliente)
+        [HttpGet("/producto")]
+        public async Task<ActionResult<IEnumerator<Inscripcion>>> 
+            GetInscripcionesCliente([FromQuery] int idCliente, [FromQuery] int idProducto)
         {
-            var inscriptions = await _context.LoadAsync<Inscripcion>(idCliente);
+            var inscriptions = await _context.LoadAsync<Inscripcion>(idCliente, idProducto);
             if (inscriptions == null)
             {
                 return NotFound();
